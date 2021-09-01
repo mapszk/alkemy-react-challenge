@@ -1,15 +1,19 @@
-import React, { useState } from "react"
+import React, { FC, useState } from "react"
 import { Button, Col, FormControl, InputGroup, Row } from "react-bootstrap"
 import { AiOutlineSearch } from "react-icons/ai"
 import { useHistory } from "react-router-dom"
 
-const Search = () => {
+interface Props {
+  title: string
+}
+
+const Navbar: FC<Props> = ({ title }) => {
   const history = useHistory()
   const [search, setSearch] = useState<string>("")
   const handleSearch = () => history.push(`/search/${search}`)
 
   return (
-    <Row className="align-items-center justify-content-between mt-2">
+    <Row className="align-items-center justify-content-between my-2">
       <Col className="order-sm-2" xs={12} sm={6} lg={4}>
         <InputGroup className="mb-2 mb-sm-0 w-100 mw-50">
           <FormControl
@@ -29,10 +33,19 @@ const Search = () => {
         </InputGroup>
       </Col>
       <Col xs={12} sm={6}>
-        <h1>Equipo</h1>
+        <div className="d-flex align-items-center">
+          {history.location.pathname !== "/" && (
+            <Button size="sm" href="/">
+              Volver
+            </Button>
+          )}
+          <h1 className={history.location.pathname !== "/" ? "mx-2" : ""}>
+            {title}
+          </h1>
+        </div>
       </Col>
     </Row>
   )
 }
 
-export default Search
+export default Navbar
