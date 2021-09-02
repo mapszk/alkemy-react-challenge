@@ -14,7 +14,7 @@ import PrivateRoute from "./components/PrivateRoute/PrivateRoute"
 const App = () => {
   return (
     <TeamContextProvider>
-      <Container className="px-2 px-sm-0">
+      <Container>
         <BrowserRouter>
           <Switch>
             <PrivateRoute path="/" exact component={Home} />

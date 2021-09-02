@@ -13,7 +13,7 @@ const Navbar: FC<Props> = ({ title }) => {
   const handleSearch = () => history.push(`/search/${search}`)
 
   return (
-    <Row className="align-items-center justify-content-between my-2">
+    <Row className="p-0 align-items-center justify-content-between my-2">
       <Col className="order-sm-2" xs={12} sm={6} lg={4}>
         <InputGroup className="mb-2 mb-sm-0 w-100 mw-50">
           <FormControl
