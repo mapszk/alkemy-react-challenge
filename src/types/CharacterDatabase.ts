@@ -16,8 +16,8 @@ export interface CharacterDatabase {
     strength: string
   }
   appearance: {
-    weight: number[]
-    height: number[]
+    weight: string[]
+    height: string[]
     "eye-color": string
     "hair-color": string
   }

@@ -76,6 +76,15 @@ const Character = () => {
         </Col>
         <Col xs={12} lg={9} className="lh-1">
           <h1 className="fw-bold">{data?.name}</h1>
+          <p
+            className={
+              data?.alignment === "good"
+                ? "bg-success p-2 rounded text-white d-inline-block"
+                : "bg-danger p-2 rounded text-white d-inline-block"
+            }
+          >
+            {data?.alignment === "good" ? "Héroe" : "Villano"}
+          </p>
           <p className="fs-5">
             Nombre completo: <span className="fw-bold">{data?.fullName}</span>
           </p>
@@ -83,16 +92,10 @@ const Character = () => {
             Alias: <span className="fw-bold">{data?.aliases.join(", ")}</span>
           </p>
           <p className="fs-5">
-            Peso:{" "}
-            <span className="fw-bold">
-              {!isNaN(Number(data?.weight)) ? data?.weight : "No disponible"}
-            </span>
+            Peso: <span className="fw-bold">{data?.weight}kg</span>
           </p>
           <p className="fs-5">
-            Altura:{" "}
-            <span className="fw-bold">
-              {!isNaN(Number(data?.height)) ? data?.height : "No disponible"}
-            </span>
+            Altura: <span className="fw-bold">{data?.height}cm</span>
           </p>
           <p className="fs-5">
             Trabajo: <span className="fw-bold">{data?.work}</span>

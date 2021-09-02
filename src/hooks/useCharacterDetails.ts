@@ -23,8 +23,8 @@ export const useCharacterDetails = (id: string) => {
             aliases: character.biography.aliases,
             eyeColor: character.appearance["eye-color"],
             hairColor: character.appearance["hair-color"],
-            height: Number(character.appearance.height),
-            weight: Number(character.appearance.weight),
+            height: Number(character.appearance.height[1].replace(/\D/g, "")),
+            weight: Number(character.appearance.weight[1].replace(/\D/g, "")),
             work: character.work.occupation,
             stats: {
               intelligence: Number(character.powerstats.intelligence),

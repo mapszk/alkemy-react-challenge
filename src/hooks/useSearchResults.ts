@@ -29,11 +29,15 @@ export const useSearchResults = (name: string) => {
                   durability: Number(character.powerstats.durability),
                   power: Number(character.powerstats.power),
                   combat: Number(character.powerstats.combat),
-                  strenght: Number(character.powerstats.strength),
+                  strength: Number(character.powerstats.strength),
                 },
                 alignment: character.biography.alignment,
-                weight: Number(character.appearance.weight[1]),
-                height: Number(character.appearance.height[1]),
+                weight: Number(
+                  character.appearance.weight[1].replace(/\D/g, "")
+                ),
+                height: Number(
+                  character.appearance.height[1].replace(/\D/g, "")
+                ),
               }
             })
           )
