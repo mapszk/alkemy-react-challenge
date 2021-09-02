@@ -3,7 +3,8 @@ import { Row, Spinner } from "react-bootstrap"
 import { useParams } from "react-router-dom"
 import Navbar from "src/components/Navbar/Navbar"
 import SearchResultCard from "src/components/SearchResults/SearchResultCard"
-import { CharacterDatabase, useSearchResults } from "src/hooks/useSearchResults"
+import { useSearchResults } from "src/hooks/useSearchResults"
+import { CharacterShortData } from "src/types/CharacterShortData"
 
 const SearchResults = () => {
   const { name } = useParams<{ name: string }>()
@@ -33,24 +34,8 @@ const SearchResults = () => {
       <Navbar title={`Resultados`} />
       <Row>
         {data ? (
-          data.map((character: CharacterDatabase) => (
-            <SearchResultCard
-              key={Number(character.id)}
-              name={character.name}
-              id={Number(character.id)}
-              image={character.image.url}
-              alignment={character.biography.alignment}
-              height={character.appearance.height[1]}
-              weight={character.appearance.weight[1]}
-              stats={{
-                intelligence: Number(character.powerstats.intelligence),
-                speed: Number(character.powerstats.speed),
-                durability: Number(character.powerstats.durability),
-                combat: Number(character.powerstats.combat),
-                power: Number(character.powerstats.power),
-                strength: Number(character.powerstats.strength),
-              }}
-            />
+          data.map((character: CharacterShortData) => (
+            <SearchResultCard key={character.id} character={character} />
           ))
         ) : (
           <div className="d-flex justify-content-center align-items-center pt-5">
