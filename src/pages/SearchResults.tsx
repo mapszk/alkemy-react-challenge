@@ -1,11 +1,11 @@
 import React from "react"
-import { Button, Card, Col, Row, Spinner } from "react-bootstrap"
-import { useHistory, useParams } from "react-router-dom"
+import { Row, Spinner } from "react-bootstrap"
+import { useParams } from "react-router-dom"
 import Navbar from "src/components/Navbar/Navbar"
-import { useSearchResults } from "src/hooks/useSearchResults"
+import SearchResultCard from "src/components/SearchResults/SearchResultCard"
+import { CharacterDatabase, useSearchResults } from "src/hooks/useSearchResults"
 
 const SearchResults = () => {
-  const history = useHistory()
   const { name } = useParams<{ name: string }>()
   const { data, loading, error } = useSearchResults(name)
 
@@ -33,23 +33,24 @@ const SearchResults = () => {
       <Navbar title={`Resultados`} />
       <Row>
         {data ? (
-          data.map((character) => (
-            <Col key={character.id} className="mb-4" xs={6} md={4} lg={2}>
-              <Card className="h-100">
-                <Card.Img
-                  variant="top"
-                  role="button"
-                  onClick={() => history.push(`/character/${character.id}`)}
-                  style={{ height: "150px", objectFit: "cover" }}
-                  src={character.image.url}
-                  alt={character.name}
-                />
-                <Card.Body className="d-flex justify-content-between flex-column p-2">
-                  <Card.Title>{character.name}</Card.Title>
-                  <Button>Agregar</Button>
-                </Card.Body>
-              </Card>
-            </Col>
+          data.map((character: CharacterDatabase) => (
+            <SearchResultCard
+              key={Number(character.id)}
+              name={character.name}
+              id={Number(character.id)}
+              image={character.image.url}
+              alignment={character.biography.alignment}
+              height={character.appearance.height[1]}
+              weight={character.appearance.weight[1]}
+              stats={{
+                intelligence: Number(character.powerstats.intelligence),
+                speed: Number(character.powerstats.speed),
+                durability: Number(character.powerstats.durability),
+                combat: Number(character.powerstats.combat),
+                power: Number(character.powerstats.power),
+                strength: Number(character.powerstats.strength),
+              }}
+            />
           ))
         ) : (
           <div className="d-flex justify-content-center align-items-center pt-5">
