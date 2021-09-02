@@ -10,9 +10,15 @@ const Team: FC = () => {
       <h4>Miembros:</h4>
       <Row>
         {team.length ? (
-          team.map(({ id, name, stats, image }) => (
+          team.map(({ id, name, stats, image, alignment }) => (
             <Col key={id} className="mb-3" sm={4} md={4} lg={2}>
-              <TeamCard id={id} name={name} stats={stats} image={image} />
+              <TeamCard
+                id={id}
+                name={name}
+                stats={stats}
+                image={image}
+                alignment={alignment}
+              />
             </Col>
           ))
         ) : (

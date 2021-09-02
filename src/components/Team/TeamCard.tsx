@@ -9,14 +9,15 @@ interface Props {
   name: string
   image: string
   stats: CharacterStats
+  alignment: "good" | "bad"
 }
 
-const TeamCard: FC<Props> = ({ id, name, image, stats }) => {
+const TeamCard: FC<Props> = ({ id, name, image, stats, alignment }) => {
   const { deleteMember } = useTeamContext()
   const history = useHistory()
   console.log(stats)
   return (
-    <Card>
+    <Card className={alignment === "good" ? "border-success" : "border-danger"}>
       <Card.Img
         role="button"
         onClick={() => history.push(`/character/${id}`)}
@@ -26,7 +27,12 @@ const TeamCard: FC<Props> = ({ id, name, image, stats }) => {
         alt="character image"
       />
       <Card.Body>
-        <Card.Title>{name}</Card.Title>
+        <Card.Title className="lh-1">
+          <h5>{name}</h5>
+          <span className="fs-6 fw-normal bg-info px-2 rounded">
+            {alignment === "good" ? "Héroe" : "Villano"}
+          </span>
+        </Card.Title>
         <ListGroup variant="flush">
           <ListGroup.Item className="px-0 py-1">
             Inteligencia: {!stats.intelligence ? "?" : stats.intelligence}
