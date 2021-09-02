@@ -11,7 +11,7 @@ interface Props {
 const SearchResultCard: FC<Props> = ({ character }) => {
   const [error, setError] = useState<boolean>(false)
   const [msg, setMsg] = useState<string>("")
-  const { id, name, image } = character
+  const { id, name, image, alignment } = character
   const history = useHistory()
   const { team, addMember } = useTeamContext()
   const handleAdd = () => {
@@ -41,7 +41,9 @@ const SearchResultCard: FC<Props> = ({ character }) => {
         </Toast>
       </ToastContainer>
       <Col className="mb-4" xs={6} md={4} lg={2}>
-        <Card className="h-100">
+        <Card
+          className={alignment === "good" ? "border-success" : "border-danger"}
+        >
           <Card.Img
             variant="top"
             role="button"
