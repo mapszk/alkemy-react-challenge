@@ -1,22 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { CharacterDatabase } from "src/types/CharacterDatabase"
 import { CharacterShortData } from "src/types/CharacterShortData"
-
-interface CharacterDatabase {
-  name: string
-  id: string
-  biography: { alignment: "good" | "bad" }
-  image: { url: string }
-  powerstats: {
-    intelligence: string
-    speed: string
-    power: string
-    combat: string
-    durability: string
-    strength: string
-  }
-  appearance: { weight: number[]; height: number[] }
-}
 
 export const useSearchResults = (name: string) => {
   const [loading, setLoading] = useState<boolean>(true)
