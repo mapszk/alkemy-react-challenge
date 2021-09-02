@@ -19,6 +19,12 @@ const TeamContextProvider: FC = ({ children }) => {
       (character) => character.alignment === "good"
     )
     const badMembers = team.filter((character) => character.alignment === "bad")
+    if (team.length === 6) {
+      return {
+        status: "error",
+        msg: "Tu equipo está completo",
+      }
+    }
     if (character.alignment === "good" && goodMembers.length === 3) {
       return {
         status: "error",
