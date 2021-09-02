@@ -9,6 +9,7 @@ import Character from "./pages/Character"
 import NotFound from "./pages/NotFound"
 import SearchResults from "./pages/SearchResults"
 import TeamContextProvider from "./contexts/TeamContext"
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute"
 
 const App = () => {
   return (
@@ -16,10 +17,22 @@ const App = () => {
       <Container className="px-2 px-sm-0">
         <BrowserRouter>
           <Switch>
-            <Route path="/" exact component={Home} />
+            <PrivateRoute>
+              <Route path="/" exact>
+                <Home />
+              </Route>
+            </PrivateRoute>
+            <PrivateRoute>
+              <Route path="/search/:name">
+                <SearchResults />
+              </Route>
+            </PrivateRoute>
+            <PrivateRoute>
+              <Route path="/character/:id">
+                <Character />
+              </Route>
+            </PrivateRoute>
             <Route path="/login" component={Login} />
-            <Route path="/search/:name" component={SearchResults} />
-            <Route path="/character/:id" component={Character} />
             <Route path="/404" component={NotFound} />
             <Redirect to="/404" />
           </Switch>
