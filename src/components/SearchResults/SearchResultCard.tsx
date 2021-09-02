@@ -3,40 +3,16 @@ import { Button, Card, Col } from "react-bootstrap"
 import { useHistory } from "react-router-dom"
 import { useTeamContext } from "src/hooks/useTeamContext"
 import { CharacterShortData } from "src/types/CharacterShortData"
-import { CharacterStats } from "src/types/CharacterStats"
 
 interface Props {
-  id: number
-  name: string
-  image: string
-  alignment: "good" | "bad"
-  stats: CharacterStats
-  weight: number
-  height: number
+  character: CharacterShortData
 }
 
-const SearchResultCard: FC<Props> = ({
-  id,
-  name,
-  image,
-  stats,
-  alignment,
-  weight,
-  height,
-}) => {
+const SearchResultCard: FC<Props> = ({ character }) => {
+  const { id, name, image } = character
   const history = useHistory()
   const { team, addMember } = useTeamContext()
-  const handleAdd = () => {
-    addMember({
-      id,
-      name,
-      image,
-      stats,
-      alignment,
-      weight,
-      height,
-    })
-  }
+  const handleAdd = () => addMember(character)
   const isInTeam = useMemo(() => {
     return team.find((ch: CharacterShortData) => ch.id === id) !== undefined
   }, [team, id])
