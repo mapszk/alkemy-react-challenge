@@ -1,0 +1,122 @@
+import React, { FC, useMemo, useState } from "react"
+import { ListGroup } from "react-bootstrap"
+import { useTeamContext } from "src/hooks/useTeamContext"
+import { CharacterShortData } from "src/types/CharacterShortData"
+import { capitalize } from "src/util/capitalize"
+
+const translateStat = (stat: string) => {
+  switch (stat) {
+    case "Speed":
+      return "Velocidad"
+    case "Durability":
+      return "Resistencia"
+    case "Strenght":
+      return "Fuerza"
+    case "Power":
+      return "Potencia"
+    case "Combat":
+      return "Combate"
+    case "Intelligence":
+      return "Inteligencia"
+  }
+}
+
+const TeamStats: FC = () => {
+  const { team } = useTeamContext()
+  const stats = useMemo(() => {
+    const totalIntelligence = team.map((character: CharacterShortData) =>
+      !character.stats.intelligence ? 0 : character.stats.intelligence
+    )
+    const totalSpeed = team.map((character: CharacterShortData) =>
+      !character.stats.speed ? 0 : character.stats.speed
+    )
+    const totalPower = team.map((character: CharacterShortData) =>
+      !character.stats.power ? 0 : character.stats.power
+    )
+    const totalDurability = team.map((character: CharacterShortData) =>
+      !character.stats.durability ? 0 : character.stats.durability
+    )
+    const totalCombat = team.map((character: CharacterShortData) =>
+      !character.stats.combat ? 0 : character.stats.combat
+    )
+    const totalStrenght = team.map((character: CharacterShortData) =>
+      !character.stats.strength ? 0 : character.stats.strength
+    )
+    return [
+      {
+        name: "intelligence",
+        value: totalIntelligence.reduce((a: number, b: number) => a + b, 0),
+      },
+      {
+        name: "speed",
+        value: totalSpeed.reduce((a: number, b: number) => a + b, 0),
+      },
+      {
+        name: "power",
+        value: totalPower.reduce((a: number, b: number) => a + b, 0),
+      },
+      {
+        name: "durability",
+        value: totalDurability.reduce((a: number, b: number) => a + b, 0),
+      },
+      {
+        name: "combat",
+        value: totalCombat.reduce((a: number, b: number) => a + b, 0),
+      },
+      {
+        name: "strenght",
+        value: totalStrenght.reduce((a: number, b: number) => a + b, 0),
+      },
+    ]
+  }, [team])
+  const averageWeightHeight = useMemo(() => {
+    const allWeights = team.map((character: CharacterShortData) =>
+      character.weight ? character.weight : 0
+    )
+    const allHeights = team.map((character: CharacterShortData) =>
+      character.height ? character.height : 0
+    )
+    return {
+      weight:
+        allWeights.reduce((a: number, b: number) => a + b, 0) /
+        allWeights.length,
+      height:
+        allHeights.reduce((a: number, b: number) => a + b, 0) /
+        allHeights.length,
+    }
+  }, [team])
+  return (
+    <div>
+      <h4>Estadísticas:</h4>
+      <ListGroup horizontal="md">
+        {stats
+          .sort((a, b) => a.value - b.value)
+          .map((stat, index) => (
+            <ListGroup.Item className={index === 0 ? "active" : ""} key={index}>
+              {translateStat(capitalize(stat.name))}: {stat.value}
+            </ListGroup.Item>
+          ))}
+      </ListGroup>
+      <div className="d-flex lh-1 mt-3">
+        <p className="fw-bold">
+          Altura promedio:{" "}
+          <span className="fw-normal">
+            {averageWeightHeight.height
+              ? `${averageWeightHeight.height}cm`
+              : "?"}
+          </span>
+        </p>
+        <p className="fw-bold mx-4">
+          Peso promedio:{" "}
+          <span className="fw-normal">
+            {averageWeightHeight.weight
+              ? `${averageWeightHeight.weight}kg`
+              : "?"}
+          </span>
+        </p>
+      </div>
+    </div>
+  )
+}
+
+export default TeamStats

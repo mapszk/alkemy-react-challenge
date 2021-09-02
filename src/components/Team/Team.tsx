@@ -6,7 +6,7 @@ import TeamCard from "./TeamCard"
 const Team: FC = () => {
   const { team } = useTeamContext()
   return (
-    <div className="mt-2">
+    <div>
       <h4>Miembros:</h4>
       <Row>
         {team.length ? (
