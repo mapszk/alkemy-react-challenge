@@ -17,21 +17,9 @@ const App = () => {
       <Container className="px-2 px-sm-0">
         <BrowserRouter>
           <Switch>
-            <PrivateRoute>
-              <Route path="/" exact>
-                <Home />
-              </Route>
-            </PrivateRoute>
-            <PrivateRoute>
-              <Route path="/search/:name">
-                <SearchResults />
-              </Route>
-            </PrivateRoute>
-            <PrivateRoute>
-              <Route path="/character/:id">
-                <Character />
-              </Route>
-            </PrivateRoute>
+            <PrivateRoute path="/" exact component={Home} />
+            <PrivateRoute path="/search/:name" component={SearchResults} />
+            <PrivateRoute path="/character/:id" component={Character} />
             <Route path="/login" component={Login} />
             <Route path="/404" component={NotFound} />
             <Redirect to="/404" />
