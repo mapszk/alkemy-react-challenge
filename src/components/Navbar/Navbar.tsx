@@ -25,6 +25,7 @@ const Navbar: FC<Props> = ({ title }) => {
             placeholder="Buscar personaje..."
           />
           <Button
+            onClick={handleSearch}
             type="submit"
             className="d-flex justify-content-center align-items-center"
           >
@@ -39,9 +40,9 @@ const Navbar: FC<Props> = ({ title }) => {
               Volver
             </Button>
           )}
-          <h1 className={history.location.pathname !== "/" ? "mx-2" : ""}>
+          <h2 className={history.location.pathname !== "/" ? "mx-2" : ""}>
             {title}
-          </h1>
+          </h2>
         </div>
       </Col>
     </Row>
