@@ -15,7 +15,7 @@ interface Props {
 const TeamCard: FC<Props> = ({ id, name, image, stats, alignment }) => {
   const { deleteMember } = useTeamContext()
   const history = useHistory()
-  console.log(stats)
+  
   return (
     <Card className={alignment === "good" ? "border-success" : "border-danger"}>
       <Card.Img
