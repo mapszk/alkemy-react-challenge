@@ -1,27 +1,53 @@
 import React, { FC, useMemo, useState } from "react"
 import { Button, Card, Col, Toast, ToastContainer } from "react-bootstrap"
+import { connect } from "react-redux"
 import { useHistory } from "react-router-dom"
-import { useTeamContext } from "src/hooks/useTeamContext"
+import { State } from "src/store/store"
 import { CharacterShortData } from "src/types/CharacterShortData"
+import { ADD_CHARACTER } from "../../store/actionTypes"
 
 interface Props {
   character: CharacterShortData
+  team: CharacterShortData[]
+  addCharacter: any
 }
 
-const SearchResultCard: FC<Props> = ({ character }) => {
+const SearchResultCard: FC<Props> = ({ addCharacter, character, team }) => {
+  const { id, name, image, alignment } = character
   const [error, setError] = useState<boolean>(false)
   const [msg, setMsg] = useState<string>("")
-  const { id, name, image, alignment } = character
   const history = useHistory()
-  const { team, addMember } = useTeamContext()
+
   const handleAdd = () => {
-    const { status, msg } = addMember(character)
-    if (status === "error") {
+    const goodCharacters = team.filter(
+      (character) => character.alignment === "good"
+    )
+    const badCharacters = team.filter(
+      (character) => character.alignment === "bad"
+    )
+    if (team.length === 6) {
       setError(true)
-      setMsg(msg)
+      setMsg("Solo puedes agregar 6 personajes")
       setTimeout(() => {
         setError(false)
       }, 3000)
+      return
+    } else if (alignment === "good" && goodCharacters.length === 3) {
+      setError(true)
+      setMsg("Solo puedes agregar 3 heroes")
+      setTimeout(() => {
+        setError(false)
+      }, 3000)
+      return
+    } else if (alignment === "bad" && badCharacters.length === 3) {
+      setError(true)
+      setMsg("Solo puedes agregar 3 villanos")
+      setTimeout(() => {
+        setError(false)
+      }, 3000)
+      return
+    } else {
+      addCharacter(character)
     }
   }
   const isInTeam = useMemo(() => {
@@ -68,4 +94,15 @@ const SearchResultCard: FC<Props> = ({ character }) => {
   )
 }
 
-export default SearchResultCard
+const mapStateToProps = (state: State) => {
+  const { characters } = state
+  return { team: characters }
+}
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    addCharacter: (character: CharacterShortData) =>
+      dispatch({ type: ADD_CHARACTER, payload: character }),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResultCard)
