@@ -1,10 +1,15 @@
 import React, { FC } from "react"
 import { Col, Row } from "react-bootstrap"
-import { useTeamContext } from "src/hooks/useTeamContext"
+import { connect } from "react-redux"
+import { State } from "src/store/store"
+import { CharacterShortData } from "src/types/CharacterShortData"
 import TeamCard from "./TeamCard"
 
-const Team: FC = () => {
-  const { team } = useTeamContext()
+interface Props {
+  team: CharacterShortData[]
+}
+
+const Team: FC<Props> = ({ team }) => {
   return (
     <div>
       <h4>Miembros:</h4>
@@ -31,4 +36,9 @@ const Team: FC = () => {
   )
 }
 
-export default Team
+const mapStateToProps = (state: State) => {
+  const { characters } = state
+  return { team: characters }
+}
+
+export default connect(mapStateToProps)(Team)

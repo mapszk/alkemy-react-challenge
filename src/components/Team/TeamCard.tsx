@@ -1,7 +1,8 @@
 import React, { FC } from "react"
 import { Button, Card, ListGroup } from "react-bootstrap"
+import { connect } from "react-redux"
 import { useHistory } from "react-router-dom"
-import { useTeamContext } from "src/hooks/useTeamContext"
+import { DELETE_CHARACTER } from "src/store/actionTypes"
 import { CharacterStats } from "src/types/CharacterStats"
 
 interface Props {
@@ -10,12 +11,18 @@ interface Props {
   image: string
   stats: CharacterStats
   alignment: "good" | "bad"
+  deleteCharacter: any
 }
 
-const TeamCard: FC<Props> = ({ id, name, image, stats, alignment }) => {
-  const { deleteMember } = useTeamContext()
+const TeamCard: FC<Props> = ({
+  id,
+  name,
+  image,
+  stats,
+  alignment,
+  deleteCharacter,
+}) => {
   const history = useHistory()
-  console.log(stats)
   return (
     <Card className={alignment === "good" ? "border-success" : "border-danger"}>
       <Card.Img
@@ -62,11 +69,18 @@ const TeamCard: FC<Props> = ({ id, name, image, stats, alignment }) => {
       >
         Ver detalle
       </Button>
-      <Button onClick={() => deleteMember(id)} size="sm" variant="danger">
+      <Button onClick={() => deleteCharacter(id)} size="sm" variant="danger">
         Remover
       </Button>
     </Card>
   )
 }
 
-export default TeamCard
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    deleteCharacter: (id: number) =>
+      dispatch({ type: DELETE_CHARACTER, payload: id }),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(TeamCard)
