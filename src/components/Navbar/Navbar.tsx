@@ -36,7 +36,7 @@ const Navbar: FC<Props> = ({ title }) => {
       <Col xs={12} sm={6}>
         <div className="d-flex align-items-center">
           {history.location.pathname !== "/" && (
-            <Button size="sm" href="/">
+            <Button size="sm" onClick={() => history.push("/")}>
               Volver
             </Button>
           )}
