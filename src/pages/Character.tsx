@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react"
+import React, { FC, useMemo, useState } from "react"
 import {
   Row,
   Col,
@@ -7,26 +7,56 @@ import {
   ToastContainer,
   Toast,
 } from "react-bootstrap"
+import { connect } from "react-redux"
 import { Redirect, useParams } from "react-router-dom"
 import Navbar from "src/components/Navbar/Navbar"
 import { useCharacterDetails } from "src/hooks/useCharacterDetails"
-import { useTeamContext } from "src/hooks/useTeamContext"
+import { ADD_CHARACTER } from "src/store/actionTypes"
+import { State } from "src/store/store"
 import { CharacterShortData } from "src/types/CharacterShortData"
 
-const Character = () => {
+interface Props {
+  team: CharacterShortData[]
+  addCharacter: any
+}
+
+const Character: FC<Props> = ({ team, addCharacter }) => {
+  const { id } = useParams<{ id: string }>()
   const [errorAdd, setErrorAdd] = useState<boolean>(false)
   const [msg, setMsg] = useState<string>("")
-  const { id } = useParams<{ id: string }>()
   const { data, loading, error } = useCharacterDetails(id)
-  const { team, addMember } = useTeamContext()
+
   const handleAdd = () => {
-    const { status, msg } = addMember(data as CharacterShortData)
-    if (status === "error") {
+    if (!data) return
+    const goodCharacters = team.filter(
+      (character) => character.alignment === "good"
+    )
+    const badCharacters = team.filter(
+      (character) => character.alignment === "bad"
+    )
+    if (team.length === 6) {
       setErrorAdd(true)
-      setMsg(msg)
+      setMsg("Solo puedes agregar 6 personajes")
       setTimeout(() => {
         setErrorAdd(false)
       }, 3000)
+      return
+    } else if (data.alignment === "good" && goodCharacters.length === 3) {
+      setErrorAdd(true)
+      setMsg("Solo puedes agregar 3 heroes")
+      setTimeout(() => {
+        setErrorAdd(false)
+      }, 3000)
+      return
+    } else if (data.alignment === "bad" && badCharacters.length === 3) {
+      setErrorAdd(true)
+      setMsg("Solo puedes agregar 3 villanos")
+      setTimeout(() => {
+        setErrorAdd(false)
+      }, 3000)
+      return
+    } else {
+      addCharacter(data)
     }
   }
   const isInTeam = useMemo(() => {
@@ -112,4 +142,15 @@ const Character = () => {
   )
 }
 
-export default Character
+const mapStateToProps = (state: State) => {
+  const { characters } = state
+  return { team: characters }
+}
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    addCharacter: (character: CharacterShortData) =>
+      dispatch({ type: ADD_CHARACTER, payload: character }),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Character)
