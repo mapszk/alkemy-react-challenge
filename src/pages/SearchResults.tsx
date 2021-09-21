@@ -23,9 +23,9 @@ const SearchResults = () => {
     return (
       <>
         <Navbar title={`Resultados`} />
-        <div className="w-100 min-vh-100 text-center d-flex justify-content-center align-items-center">
-          <h2>Oops!</h2>
-          <p>Hubo un error, prueba recargando la página</p>
+        <div className="w-100 min-vh-100 flex-column text-center d-flex justify-content-center align-items-center">
+          <h2>:(</h2>
+          <p>No se encontraron resultados</p>
         </div>
       </>
     )
