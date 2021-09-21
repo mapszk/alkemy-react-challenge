@@ -1,6 +1,7 @@
-import React, { FC, useMemo, useState } from "react"
+import React, { FC, useMemo } from "react"
 import { ListGroup } from "react-bootstrap"
-import { useTeamContext } from "src/hooks/useTeamContext"
+import { connect } from "react-redux"
+import { State } from "src/store/store"
 import { CharacterShortData } from "src/types/CharacterShortData"
 import { capitalize } from "src/util/capitalize"
 
@@ -21,8 +22,11 @@ const translateStat = (stat: string) => {
   }
 }
 
-const TeamStats: FC = () => {
-  const { team } = useTeamContext()
+interface Props {
+  team: CharacterShortData[]
+}
+
+const TeamStats: FC<Props> = ({ team }) => {
   const stats = useMemo(() => {
     const totalIntelligence = team.map((character: CharacterShortData) =>
       !character.stats.intelligence ? 0 : character.stats.intelligence
@@ -90,7 +94,7 @@ const TeamStats: FC = () => {
       <h4>Estadísticas:</h4>
       <ListGroup horizontal="md">
         {stats
-          .sort((a, b) => a.value - b.value)
+          .sort((a, b) => b.value - a.value)
           .map((stat, index) => (
             <ListGroup.Item className={index === 0 ? "active" : ""} key={index}>
               {translateStat(capitalize(stat.name))}: {stat.value}
@@ -102,7 +106,7 @@ const TeamStats: FC = () => {
           Altura promedio:{" "}
           <span className="fw-normal">
             {averageWeightHeight.height
-              ? `${averageWeightHeight.height}cm`
+              ? `${averageWeightHeight.height.toFixed(2)}cm`
               : "?"}
           </span>
         </p>
@@ -110,7 +114,7 @@ const TeamStats: FC = () => {
           Peso promedio:{" "}
           <span className="fw-normal">
             {averageWeightHeight.weight
-              ? `${averageWeightHeight.weight}kg`
+              ? `${averageWeightHeight.weight.toFixed(2)}kg`
               : "?"}
           </span>
         </p>
@@ -119,4 +123,9 @@ const TeamStats: FC = () => {
   )
 }
 
-export default TeamStats
+const mapStateToProps = (state: State) => {
+  const { characters } = state
+  return { team: characters }
+}
+
+export default connect(mapStateToProps)(TeamStats)
