@@ -12,6 +12,7 @@ export const useSearchResults = (name: string) => {
     const apiKey = process.env.REACT_APP_API_KEY
     const url = `https://superheroapi.com/api.php/${apiKey}/search/${name}`
     const getData = async () => {
+      setError(false)
       setLoading(true)
       await axios
         .get(url)
