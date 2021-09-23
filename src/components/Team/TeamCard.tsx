@@ -31,7 +31,7 @@ const TeamCard: FC<Props> = ({
         style={{ height: "150px", objectFit: "cover" }}
         variant="top"
         src={image}
-        alt="character image"
+        alt={name}
       />
       <Card.Body>
         <Card.Title className="lh-1">
@@ -65,7 +65,7 @@ const TeamCard: FC<Props> = ({
         className="mb-1"
         size="sm"
         variant="primary"
-        href={`/character/${id}`}
+        onClick={() => history.push(`/character/${id}`)}
       >
         Ver detalle
       </Button>
