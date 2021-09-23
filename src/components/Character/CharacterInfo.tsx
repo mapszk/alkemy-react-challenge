@@ -1,18 +1,9 @@
 import React, { FC } from "react"
 import { Col } from "react-bootstrap"
+import { CharacterLongData } from "src/types/CharacterLongData"
 
 interface Props {
-  info: {
-    name: string
-    fullName: string
-    alignment: "good" | "bad"
-    aliases: string[]
-    weight: number
-    height: number
-    work: string
-    hairColor: string
-    eyeColor: string
-  }
+  info: CharacterLongData
 }
 
 const CharacterInfo: FC<Props> = ({ info }) => {
