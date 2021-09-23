@@ -1,7 +1,6 @@
 import React, { FC, useMemo, useState } from "react"
 import { Col, ToastContainer, Toast, Button } from "react-bootstrap"
 import { connect } from "react-redux"
-import { useParams } from "react-router"
 import { ADD_CHARACTER } from "src/store/actionTypes"
 import { State } from "src/store/store"
 import { CharacterShortData } from "src/types/CharacterShortData"
@@ -13,10 +12,9 @@ interface Props {
 }
 
 const CharacterImage: FC<Props> = ({ team, info, addCharacter }) => {
-  const { id } = useParams<{ id: string }>()
   const [errorAdd, setErrorAdd] = useState<boolean>(false)
   const [msg, setMsg] = useState<string>("")
-  const { image, name } = info
+  const { image, name, id } = info
 
   const handleAdd = () => {
     if (!info) return
