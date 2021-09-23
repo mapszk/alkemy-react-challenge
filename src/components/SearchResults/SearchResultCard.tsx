@@ -19,8 +19,12 @@ const SearchResultCard: FC<Props> = ({ addCharacter, character, team }) => {
   const history = useHistory()
 
   const handleAdd = () => {
-    const goodCharacters = team.filter((character) => character.alignment === "good")
-    const badCharacters = team.filter((character) => character.alignment === "bad")
+    const goodCharacters = team.filter(
+      (character) => character.alignment === "good"
+    )
+    const badCharacters = team.filter(
+      (character) => character.alignment === "bad"
+    )
     if (team.length === 6) {
       setError(true)
       setMsg("Solo puedes agregar 6 personajes")
@@ -52,14 +56,20 @@ const SearchResultCard: FC<Props> = ({ addCharacter, character, team }) => {
 
   return (
     <>
-      <ToastContainer className="mt-2" style={{ zIndex: 99 }} position="top-center">
+      <ToastContainer
+        className="mt-2"
+        style={{ zIndex: 99 }}
+        position="top-center"
+      >
         <Toast show={error} onClose={() => setError(false)}>
           <Toast.Header className="d-flex justify-content-end mx-2"></Toast.Header>
           <Toast.Body className="opacity-100">{msg}</Toast.Body>
         </Toast>
       </ToastContainer>
       <Col className="mb-4" xs={6} md={4} lg={2}>
-        <Card className={alignment === "good" ? "border-success" : "border-danger"}>
+        <Card
+          className={alignment === "good" ? "border-success" : "border-danger"}
+        >
           <Card.Img
             variant="top"
             role="button"

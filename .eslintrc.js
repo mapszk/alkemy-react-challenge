@@ -23,7 +23,6 @@ module.exports = {
         semi: false,
         singleQuote: false,
         endOfLine: "auto",
-        printWidth: 100,
       },
     ],
   },

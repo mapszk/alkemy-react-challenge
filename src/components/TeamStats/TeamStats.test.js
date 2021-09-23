@@ -102,21 +102,35 @@ describe("<TeamStats/>", () => {
               testStats1.intelligence + testStats2.intelligence
             )
           case "Fuerza":
-            return expect(Number(statNumber)).toBe(testStats1.strength + testStats2.strength)
+            return expect(Number(statNumber)).toBe(
+              testStats1.strength + testStats2.strength
+            )
           case "Potencia":
-            return expect(Number(statNumber)).toBe(testStats1.power + testStats2.power)
+            return expect(Number(statNumber)).toBe(
+              testStats1.power + testStats2.power
+            )
           case "Velocidad":
-            return expect(Number(statNumber)).toBe(testStats1.speed + testStats2.speed)
+            return expect(Number(statNumber)).toBe(
+              testStats1.speed + testStats2.speed
+            )
           case "Resistencia":
-            return expect(Number(statNumber)).toBe(testStats1.durability + testStats2.durability)
+            return expect(Number(statNumber)).toBe(
+              testStats1.durability + testStats2.durability
+            )
           case "Combate":
-            return expect(Number(statNumber)).toBe(testStats1.combat + testStats2.combat)
+            return expect(Number(statNumber)).toBe(
+              testStats1.combat + testStats2.combat
+            )
         }
       }
     })
     test("Weight and height should display the average between characters", () => {
-      const averageWeight = component.getByText("Peso promedio:").textContent.replace(/^\D+/g, "")
-      const averageHeight = component.getByText("Altura promedio:").textContent.replace(/^\D+/g, "")
+      const averageWeight = component
+        .getByText("Peso promedio:")
+        .textContent.replace(/^\D+/g, "")
+      const averageHeight = component
+        .getByText("Altura promedio:")
+        .textContent.replace(/^\D+/g, "")
       const allCharacterWeights = store
         .getState()
         .characters.map((ch) => ch.weight)
@@ -125,18 +139,24 @@ describe("<TeamStats/>", () => {
         .getState()
         .characters.map((ch) => ch.height)
         .reduce((a, b) => a + b)
-      const expectedWeight = allCharacterWeights / store.getState().characters.length
-      const expectedHeight = allCharacterHeights / store.getState().characters.length
-      expect(parseFloat(averageWeight).toFixed(2)).toBe(expectedWeight.toFixed(2))
-      expect(parseFloat(averageHeight).toFixed(2)).toBe(expectedHeight.toFixed(2))
+      const expectedWeight =
+        allCharacterWeights / store.getState().characters.length
+      const expectedHeight =
+        allCharacterHeights / store.getState().characters.length
+      expect(parseFloat(averageWeight).toFixed(2)).toBe(
+        expectedWeight.toFixed(2)
+      )
+      expect(parseFloat(averageHeight).toFixed(2)).toBe(
+        expectedHeight.toFixed(2)
+      )
     })
     test("Highest stat should have 'active' class", () => {
       const stats = component.container.querySelectorAll(".list-group-item")
-      const highestStat = Array.from(stats).reduce((a, b) =>
-        parseInt(a.textContent.replace(/^\D+/g, "")) > parseInt(b.textContent.replace(/^\D+/g, ""))
-          ? a
-          : b
-      )
+      const highestStat = Array.from(stats).reduce((a, b) => {
+        const numberA = parseInt(a.textContent.replace(/^\D+/g, ""))
+        const numberB = parseInt(b.textContent.replace(/^\D+/g, ""))
+        return numberA > numberB ? a : b
+      })
       expect(highestStat).toHaveClass("active")
     })
   })
