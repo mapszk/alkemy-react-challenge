@@ -6,6 +6,7 @@ export const addCharacter = (character: CharacterShortData) => {
     type: actionTypes.ADD_CHARACTER,
     payload: character,
   }
+  return action
 }
 
 export const deleteCharacter = (id: number) => {
@@ -13,4 +14,5 @@ export const deleteCharacter = (id: number) => {
     type: actionTypes.DELETE_CHARACTER,
     payload: id,
   }
+  return action
 }
