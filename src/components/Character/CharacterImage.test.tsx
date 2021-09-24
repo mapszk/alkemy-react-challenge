@@ -48,8 +48,9 @@ describe("<CharacterImage/>", () => {
         </Provider>
       )
     })
-    test("Component renders", () => {
+    it("Should render the name and button", () => {
       expect(screen.getByAltText(testHeroe.name)).toBeInTheDocument()
+      expect(screen.getByText("Agregar")).toBeInTheDocument()
     })
   })
   describe("With emtpy team", () => {
@@ -64,7 +65,7 @@ describe("<CharacterImage/>", () => {
         </Provider>
       )
     })
-    test("Dispatch an action when clicking on add button", () => {
+    it("Should dispatch an action when clicking on add button", () => {
       const addButton = screen.getByText("Agregar")
       fireEvent.click(addButton)
       expect(store.dispatch).toHaveBeenCalledTimes(1)
@@ -83,7 +84,7 @@ describe("<CharacterImage/>", () => {
         </Provider>
       )
     })
-    test("With character in team add button should be disabled", () => {
+    test("Add button should be disabled", () => {
       const addButton = screen.getByText("Agregado")
       expect(addButton).toBeDisabled()
     })
@@ -100,13 +101,13 @@ describe("<CharacterImage/>", () => {
         </Provider>
       )
     })
-    test("When clicking on add button modal warning should be displayed", async () => {
+    it("Should display a modal warning when clicking on add button", async () => {
       const addButton = screen.getByText("Agregar")
       fireEvent.click(addButton)
       await screen.findByText("Solo puedes agregar 6 personajes")
     })
   })
-  describe("With 3 characters with good alignment", () => {
+  describe("With 3 characters with good alignment in team", () => {
     beforeEach(() => {
       store = mockStore({
         characters: [
@@ -122,13 +123,13 @@ describe("<CharacterImage/>", () => {
         </Provider>
       )
     })
-    test("When clicking on add button modal warning should be displayed", async () => {
+    it("Should display a modal warning and don't add the character", async () => {
       const addButton = screen.getByText("Agregar")
       fireEvent.click(addButton)
       await screen.findByText("Solo puedes agregar 3 heroes")
     })
   })
-  describe("With 3 characters with bad alignment", () => {
+  describe("With 3 characters with bad alignment in team", () => {
     beforeEach(() => {
       store = mockStore({
         characters: [
@@ -144,7 +145,7 @@ describe("<CharacterImage/>", () => {
         </Provider>
       )
     })
-    test("When clicking on add button modal warning should be displayed", async () => {
+    it("Should display a modal warning and don't add the character", async () => {
       const addButton = screen.getByText("Agregar")
       fireEvent.click(addButton)
       await screen.findByText("Solo puedes agregar 3 villanos")
