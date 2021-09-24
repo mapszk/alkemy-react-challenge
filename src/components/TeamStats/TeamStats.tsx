@@ -3,24 +3,7 @@ import { ListGroup } from "react-bootstrap"
 import { connect } from "react-redux"
 import { State } from "src/store/store"
 import { CharacterShortData } from "src/types/CharacterShortData"
-import { capitalize } from "src/util/capitalize"
-
-const translateStat = (stat: string) => {
-  switch (stat) {
-    case "Speed":
-      return "Velocidad"
-    case "Durability":
-      return "Resistencia"
-    case "Strenght":
-      return "Fuerza"
-    case "Power":
-      return "Potencia"
-    case "Combat":
-      return "Combate"
-    case "Intelligence":
-      return "Inteligencia"
-  }
-}
+import { translateStat } from "src/util/translateStat"
 
 interface Props {
   team: CharacterShortData[]
@@ -89,6 +72,7 @@ const TeamStats: FC<Props> = ({ team }) => {
         allHeights.length,
     }
   }, [team])
+
   return (
     <div>
       <h4>Estadísticas:</h4>
@@ -96,8 +80,12 @@ const TeamStats: FC<Props> = ({ team }) => {
         {stats
           .sort((a, b) => b.value - a.value)
           .map((stat, index) => (
-            <ListGroup.Item className={index === 0 ? "active" : ""} key={index}>
-              {translateStat(capitalize(stat.name))}: {stat.value}
+            <ListGroup.Item
+              data-testid="stat-test"
+              className={index === 0 ? "active" : ""}
+              key={index}
+            >
+              {translateStat(stat.name)}: {stat.value}
             </ListGroup.Item>
           ))}
       </ListGroup>
