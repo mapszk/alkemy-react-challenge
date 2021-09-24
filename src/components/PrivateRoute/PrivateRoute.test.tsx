@@ -8,11 +8,10 @@ import { render } from "@testing-library/react"
 const testMock = () => <div>Private page</div>
 
 describe("<PrivateRoute/>", () => {
-  let component
   const history = createMemoryHistory()
   const redirectPath = "/login"
   beforeEach(() => {
-    component = render(
+    render(
       <Router history={history}>
         <PrivateRoute component={testMock} exact path="/" />
       </Router>
@@ -20,7 +19,7 @@ describe("<PrivateRoute/>", () => {
   })
   test("Route checks localstorage", () => {
     expect(localStorage.getItem).toBeCalledWith("token")
-    expect(localStorage.getItem()).toBeFalsy()
+    expect(localStorage.getItem("token")).toBeFalsy()
     expect(history.location.pathname).toBe(redirectPath)
   })
 })

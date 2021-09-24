@@ -1,12 +1,14 @@
 import React from "react"
 import "@testing-library/jest-dom/extend-expect"
 import Team from "./Team"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import { Provider } from "react-redux"
 import configureStore from "redux-mock-store"
+import { CharacterStats } from "src/types/CharacterStats"
+import { CharacterShortData } from "src/types/CharacterShortData"
 
-const mockStore = configureStore({})
-const testStatsNumbers = {
+const mockStore = configureStore()
+const testStatsNumbers: CharacterStats = {
   intelligence: 1,
   strength: 1,
   speed: 1,
@@ -14,35 +16,36 @@ const testStatsNumbers = {
   power: 1,
   combat: 1,
 }
-const testCharacter = {
+const testCharacter: CharacterShortData = {
   name: "Batman",
   id: 100,
   image: "https://placeimg.com/500/500",
   alignment: "good",
   stats: testStatsNumbers,
+  weight: 90.0,
+  height: 180.5,
 }
-const testCharacter2 = {
+const testCharacter2: CharacterShortData = {
   ...testCharacter,
   id: 200,
 }
 
 describe("<Team/>", () => {
-  let component
-  let store
+  let store: any
   describe("Rendering", () => {
     beforeEach(() => {
       store = mockStore({
         characters: [],
       })
-      component = render(
+      render(
         <Provider store={store}>
           <Team />
         </Provider>
       )
     })
     test("Component renders", () => {
-      const title = component.getByText("Miembros:")
-      expect(component.container).toContainElement(title)
+      const title = screen.getByText("Miembros:")
+      expect(title).toBeInTheDocument()
     })
   })
   describe("Emtpy team", () => {
@@ -50,17 +53,17 @@ describe("<Team/>", () => {
       store = mockStore({
         characters: [],
       })
-      component = render(
+      render(
         <Provider store={store}>
           <Team />
         </Provider>
       )
     })
     test("When team is empty displays a text", () => {
-      const teamEmtpyText = component.getByText(
+      const teamEmtpyText = screen.getByText(
         "No tienes ningún personaje en tu equipo"
       )
-      expect(component.container).toContainElement(teamEmtpyText)
+      expect(teamEmtpyText).toBeInTheDocument()
     })
   })
   describe("Team has characters", () => {
@@ -68,14 +71,14 @@ describe("<Team/>", () => {
       store = mockStore({
         characters: [testCharacter, testCharacter2],
       })
-      component = render(
+      render(
         <Provider store={store}>
           <Team />
         </Provider>
       )
     })
     test("Render as many TeamCards as there are characters on the team", () => {
-      const charactersNames = component.getAllByText(testCharacter.name)
+      const charactersNames = screen.getAllByText(testCharacter.name)
       expect(charactersNames).toHaveLength(store.getState().characters.length)
     })
   })

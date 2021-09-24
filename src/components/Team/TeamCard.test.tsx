@@ -1,16 +1,17 @@
 import React from "react"
 import "@testing-library/jest-dom/extend-expect"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import { Router } from "react-router"
 import { createMemoryHistory } from "history"
 import TeamCard from "./TeamCard"
 import { Provider } from "react-redux"
 import configureStore from "redux-mock-store"
-import { fireEvent, prettyDOM } from "@testing-library/dom"
+import { fireEvent } from "@testing-library/dom"
 import { deleteCharacter } from "src/store/actionCreators"
+import { CharacterStats } from "src/types/CharacterStats"
 
-const mockStore = configureStore({})
-const testStatsNan = {
+const mockStore = configureStore()
+const testStatsNan: CharacterStats = {
   intelligence: NaN,
   strength: NaN,
   speed: NaN,
@@ -18,7 +19,7 @@ const testStatsNan = {
   power: NaN,
   combat: NaN,
 }
-const testStatsNumbers = {
+const testStatsNumbers: CharacterStats = {
   intelligence: 1,
   strength: 1,
   speed: 1,
@@ -31,23 +32,24 @@ const testCharacter = {
   id: 100,
   image: "https://placeimg.com/500/500",
   alignment: "good",
+  weight: 90.0,
+  height: 180.5,
 }
 
 describe("<TeamCard/>", () => {
-  let component
-  let store
+  let store: any
   const history = createMemoryHistory()
   describe("Rendering", () => {
     beforeEach(() => {
       store = mockStore({})
-      component = render(
+      render(
         <Provider store={store}>
           <Router history={history}>
             <TeamCard
               name={testCharacter.name}
               id={testCharacter.id}
               image={testCharacter.image}
-              alignment={testCharacter.alignment}
+              alignment={testCharacter.alignment as "good"}
               stats={testStatsNumbers}
             />
           </Router>
@@ -55,24 +57,24 @@ describe("<TeamCard/>", () => {
       )
     })
     test("Component renders", () => {
-      const name = component.getByText(testCharacter.name)
-      const alignment = component.getByText("Héroe")
-      expect(component.container).toContainElement(name)
-      expect(component.container).toContainElement(alignment)
+      const name = screen.getByText(testCharacter.name)
+      const alignment = screen.getByText("Héroe")
+      expect(name).toBeInTheDocument()
+      expect(alignment).toBeInTheDocument()
     })
   })
   describe("Buttons actions", () => {
     beforeEach(() => {
       store = mockStore({})
       store.dispatch = jest.fn()
-      component = render(
+      render(
         <Provider store={store}>
           <Router history={history}>
             <TeamCard
               name={testCharacter.name}
               id={testCharacter.id}
               image={testCharacter.image}
-              alignment={testCharacter.alignment}
+              alignment={testCharacter.alignment as "good"}
               stats={testStatsNumbers}
             />
           </Router>
@@ -80,7 +82,7 @@ describe("<TeamCard/>", () => {
       )
     })
     test("Dispatch an action on clicking remove button", () => {
-      const removeButton = component.getByText("Remover")
+      const removeButton = screen.getByText("Remover")
       fireEvent.click(removeButton)
       expect(store.dispatch).toHaveBeenCalledTimes(1)
       expect(store.dispatch).toHaveBeenCalledWith(
@@ -88,12 +90,12 @@ describe("<TeamCard/>", () => {
       )
     })
     test("Redirects to character page on clicking details button", () => {
-      const detailsButton = component.getByText("Ver detalle")
+      const detailsButton = screen.getByText("Ver detalle")
       fireEvent.click(detailsButton)
       expect(history.location.pathname).toBe(`/character/${testCharacter.id}`)
     })
     test("Redirects to character page on clicking image", () => {
-      const characterImage = component.getByAltText(testCharacter.name)
+      const characterImage = screen.getByAltText(testCharacter.name)
       fireEvent.click(characterImage)
       expect(history.location.pathname).toBe(`/character/${testCharacter.id}`)
     })
@@ -101,14 +103,14 @@ describe("<TeamCard/>", () => {
   describe("Rendering null stats", () => {
     beforeEach(() => {
       store = mockStore({})
-      component = render(
+      render(
         <Provider store={store}>
           <Router history={history}>
             <TeamCard
               name={testCharacter.name}
               id={testCharacter.id}
               image={testCharacter.image}
-              alignment={testCharacter.alignment}
+              alignment={testCharacter.alignment as "good"}
               stats={testStatsNan}
             />
           </Router>
@@ -116,9 +118,9 @@ describe("<TeamCard/>", () => {
       )
     })
     test("Rendering NaN stats show an '?'", () => {
-      const stats = component.container.querySelectorAll(".list-group-item")
+      const stats = screen.getAllByTestId("stat-card-test")
       for (const stat of stats) {
-        const statNumber = stat.textContent.slice(-1)
+        const statNumber = stat.textContent?.slice(-1)
         expect(statNumber).toBe("?")
       }
     })
@@ -126,14 +128,14 @@ describe("<TeamCard/>", () => {
   describe("Rendering number stats", () => {
     beforeEach(() => {
       store = mockStore({})
-      component = render(
+      render(
         <Provider store={store}>
           <Router history={history}>
             <TeamCard
               name={testCharacter.name}
               id={testCharacter.id}
               image={testCharacter.image}
-              alignment={testCharacter.alignment}
+              alignment={testCharacter.alignment as "good"}
               stats={testStatsNumbers}
             />
           </Router>
@@ -141,9 +143,9 @@ describe("<TeamCard/>", () => {
       )
     })
     test("Rendering numbers stats", () => {
-      const stats = component.container.querySelectorAll(".list-group-item")
+      const stats = screen.getAllByTestId("stat-card-test")
       for (const stat of stats) {
-        const statNumber = stat.textContent.slice(-1)
+        const statNumber = stat.textContent?.slice(-1)
         expect(Number(statNumber)).toBe(1)
       }
     })

@@ -1,9 +1,10 @@
 import React from "react"
 import CharacterInfo from "./CharacterInfo"
 import "@testing-library/jest-dom/extend-expect"
-import { render } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
+import { CharacterLongData } from "src/types/CharacterLongData"
 
-const testHeroe = {
+const testHeroe: CharacterLongData = {
   id: 1,
   name: "Batman",
   image: "https://placeimg.com/500/500",
@@ -24,7 +25,7 @@ const testHeroe = {
   hairColor: "Black",
   work: "Business",
 }
-const testVillain = {
+const testVillain: CharacterLongData = {
   id: 1,
   name: "Joker",
   image: "https://placeimg.com/500/500",
@@ -47,31 +48,30 @@ const testVillain = {
 }
 
 describe("<CharacterInfo/>", () => {
-  let component
   describe("Rendering", () => {
     beforeEach(() => {
-      component = render(<CharacterInfo info={testHeroe} />)
+      render(<CharacterInfo info={testHeroe} />)
     })
     test("Component renders", () => {
-      expect(component.container).toBeDefined()
+      expect(screen.getByText(testHeroe.name)).toBeInTheDocument()
     })
   })
   describe("Alignment good", () => {
     beforeEach(() => {
-      component = render(<CharacterInfo info={testHeroe} />)
+      render(<CharacterInfo info={testHeroe} />)
     })
     test("Heroes must have a 'bg-success' class", () => {
-      const heroeTag = component.getByText("Héroe")
+      const heroeTag = screen.getByText("Héroe")
       expect(heroeTag).toHaveTextContent("Héroe")
       expect(heroeTag).toHaveClass("bg-success")
     })
   })
   describe("Alignment good", () => {
     beforeEach(() => {
-      component = render(<CharacterInfo info={testVillain} />)
+      render(<CharacterInfo info={testVillain} />)
     })
     test("Villains must have a 'bg-danger' class", () => {
-      const heroeTag = component.getByText("Villano")
+      const heroeTag = screen.getByText("Villano")
       expect(heroeTag).toHaveTextContent("Villano")
       expect(heroeTag).toHaveClass("bg-danger")
     })
