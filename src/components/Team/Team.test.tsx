@@ -43,7 +43,7 @@ describe("<Team/>", () => {
         </Provider>
       )
     })
-    test("Component renders", () => {
+    it("Should render title", () => {
       const title = screen.getByText("Miembros:")
       expect(title).toBeInTheDocument()
     })
@@ -59,7 +59,7 @@ describe("<Team/>", () => {
         </Provider>
       )
     })
-    test("When team is empty displays a text", () => {
+    it("Should render empty team warning", () => {
       const teamEmtpyText = screen.getByText(
         "No tienes ningún personaje en tu equipo"
       )
@@ -77,7 +77,7 @@ describe("<Team/>", () => {
         </Provider>
       )
     })
-    test("Render as many TeamCards as there are characters on the team", () => {
+    it("Should render as many TeamCards as there are characters on the team", () => {
       const charactersNames = screen.getAllByText(testCharacter.name)
       expect(charactersNames).toHaveLength(store.getState().characters.length)
     })

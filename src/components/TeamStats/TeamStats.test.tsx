@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store"
 import { Provider } from "react-redux"
 import { CharacterStats } from "src/types/CharacterStats"
 import { CharacterShortData } from "src/types/CharacterShortData"
+import { translateStat } from "src/util/translateStat"
 
 const mockStore = configureStore()
 const testStats1: CharacterStats = {
@@ -53,9 +54,13 @@ describe("<TeamStats/>", () => {
         </Provider>
       )
     })
-    test("Component renders", () => {
-      const title = screen.getByText("Estadísticas:")
-      expect(title).toBeInTheDocument()
+    it("Should render title and stats", () => {
+      expect(screen.getByText("Estadísticas:")).toBeInTheDocument()
+      for (const stat of Object.keys(testStats1)) {
+        expect(
+          screen.getByText((translateStat(stat) as string) + ": 0")
+        ).toBeInTheDocument()
+      }
     })
   })
   describe("Emtpy team", () => {
@@ -69,14 +74,14 @@ describe("<TeamStats/>", () => {
         </Provider>
       )
     })
-    test("Stats should be 0 when team is empty", () => {
+    it("Stats should be 0", () => {
       const stats = screen.getAllByTestId("stat-test")
       for (const stat of stats) {
         const statNumber = stat.textContent?.slice(-1)
         expect(Number(statNumber)).toBe(0)
       }
     })
-    test("Average height and weight should show '?'", () => {
+    it("Average height and weight should show '?'", () => {
       const averageHeight = screen.getByText("Altura promedio:")
       const averageWeight = screen.getByText("Peso promedio:")
       expect(averageHeight.textContent?.slice(-1)).toBe("?")
@@ -94,7 +99,7 @@ describe("<TeamStats/>", () => {
         </Provider>
       )
     })
-    test("Stats should be the sum of all character's stats", () => {
+    it("Stats should be the sum of all character's stats", () => {
       const stats = screen.getAllByTestId("stat-test")
       for (const stat of stats) {
         // Extracting the stat name
@@ -130,7 +135,7 @@ describe("<TeamStats/>", () => {
         }
       }
     })
-    test("Weight and height should display the average between characters", () => {
+    it("Weight and height should display the average between characters", () => {
       const averageWeight = screen
         .getByText("Peso promedio:")
         .textContent?.replace(/^\D+/g, "")
@@ -156,7 +161,7 @@ describe("<TeamStats/>", () => {
         expectedHeight.toFixed(2)
       )
     })
-    test("Highest stat should have 'active' class", () => {
+    it("Highest stat should have 'active' class", () => {
       const stats = screen.getAllByTestId("stat-test")
       const highestStat = Array.from(stats).reduce((a, b) => {
         const numberA = parseInt(a.textContent?.replace(/^\D+/g, "") as string)

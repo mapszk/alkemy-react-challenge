@@ -52,25 +52,39 @@ describe("<CharacterInfo/>", () => {
     beforeEach(() => {
       render(<CharacterInfo info={testHeroe} />)
     })
-    test("Component renders", () => {
+    it("Should render name, alignment, full name, aliases, weight, height, work, hair and eye color", () => {
       expect(screen.getByText(testHeroe.name)).toBeInTheDocument()
+      expect(
+        screen.getByText(testHeroe.alignment === "good" ? "Héroe" : "Villano")
+      ).toBeInTheDocument()
+      expect(screen.getByText(testHeroe.fullName)).toBeInTheDocument()
+      expect(screen.getByText(testHeroe.aliases.join(", "))).toBeInTheDocument()
+      expect(
+        screen.getByText(testHeroe.weight.toFixed(2) + "kg")
+      ).toBeInTheDocument()
+      expect(
+        screen.getByText(testHeroe.height.toFixed(2) + "cm")
+      ).toBeInTheDocument()
+      expect(screen.getByText(testHeroe.work)).toBeInTheDocument()
+      expect(screen.getByText(testHeroe.hairColor)).toBeInTheDocument()
+      expect(screen.getByText(testHeroe.eyeColor)).toBeInTheDocument()
     })
   })
   describe("Alignment good", () => {
     beforeEach(() => {
       render(<CharacterInfo info={testHeroe} />)
     })
-    test("Heroes must have a 'bg-success' class", () => {
+    it("Heroes should have a 'bg-success' class", () => {
       const heroeTag = screen.getByText("Héroe")
       expect(heroeTag).toHaveTextContent("Héroe")
       expect(heroeTag).toHaveClass("bg-success")
     })
   })
-  describe("Alignment good", () => {
+  describe("Alignment bad", () => {
     beforeEach(() => {
       render(<CharacterInfo info={testVillain} />)
     })
-    test("Villains must have a 'bg-danger' class", () => {
+    it("Villains should have a 'bg-danger' class", () => {
       const heroeTag = screen.getByText("Villano")
       expect(heroeTag).toHaveTextContent("Villano")
       expect(heroeTag).toHaveClass("bg-danger")

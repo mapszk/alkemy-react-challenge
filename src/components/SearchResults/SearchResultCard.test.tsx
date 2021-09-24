@@ -52,8 +52,9 @@ describe("<SearchResultCard/>", () => {
         </Provider>
       )
     })
-    test("Component renders", () => {
+    it("Should render name and button", () => {
       expect(screen.getByText(testCharacter.name)).toBeInTheDocument()
+      expect(screen.getByText("Agregar")).toBeInTheDocument()
     })
   })
   describe("Team without character", () => {
@@ -68,11 +69,11 @@ describe("<SearchResultCard/>", () => {
         </Provider>
       )
     })
-    test("Without character on team, add button should be clickeable", () => {
+    it("Add button should be clickeable", () => {
       const addButton = screen.getByText(addButtonText)
       expect(addButton).toBeEnabled()
     })
-    test("Should dispatch an action on add button click", () => {
+    it("Should dispatch an action on add button click", () => {
       const addButton = screen.getByText(addButtonText)
       fireEvent.click(addButton)
       expect(store.dispatch).toHaveBeenCalledTimes(1)
@@ -90,7 +91,7 @@ describe("<SearchResultCard/>", () => {
         </Provider>
       )
     })
-    test("With character in team add button should be disabled", () => {
+    it("Add button should be disabled", () => {
       const addButton = screen.getByText(addButtonTextDisabled)
       expect(addButton).toBeInTheDocument()
     })
@@ -106,7 +107,7 @@ describe("<SearchResultCard/>", () => {
         </Provider>
       )
     })
-    test("With full team clicking on add button should display a modal warning", () => {
+    it("Clicking on add button should display a modal warning", () => {
       const addButton = screen.getByText(addButtonText)
       fireEvent.click(addButton)
       expect(

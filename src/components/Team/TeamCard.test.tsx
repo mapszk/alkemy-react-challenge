@@ -9,6 +9,7 @@ import configureStore from "redux-mock-store"
 import { fireEvent } from "@testing-library/dom"
 import { deleteCharacter } from "src/store/actionCreators"
 import { CharacterStats } from "src/types/CharacterStats"
+import { translateStat } from "src/util/translateStat"
 
 const mockStore = configureStore()
 const testStatsNan: CharacterStats = {
@@ -56,11 +57,21 @@ describe("<TeamCard/>", () => {
         </Provider>
       )
     })
-    test("Component renders", () => {
-      const name = screen.getByText(testCharacter.name)
-      const alignment = screen.getByText("Héroe")
-      expect(name).toBeInTheDocument()
-      expect(alignment).toBeInTheDocument()
+    it("Should render name, alignment, stats, details button and remove button", () => {
+      const aligment = screen.getByText(
+        testCharacter.alignment === "good" ? "Héroe" : "Villano"
+      )
+      expect(screen.getByText(testCharacter.name)).toBeInTheDocument()
+      expect(aligment).toBeInTheDocument()
+      expect(screen.getByText("Ver detalle")).toBeInTheDocument()
+      expect(screen.getByText("Remover")).toBeInTheDocument()
+      for (const stat of Object.keys(testStatsNumbers)) {
+        expect(
+          screen.getByText(
+            (translateStat(stat) as string) + ": " + testStatsNumbers[stat]
+          )
+        ).toBeInTheDocument()
+      }
     })
   })
   describe("Buttons actions", () => {
@@ -81,7 +92,7 @@ describe("<TeamCard/>", () => {
         </Provider>
       )
     })
-    test("Dispatch an action on clicking remove button", () => {
+    it("Should dispatch an action on clicking remove button", () => {
       const removeButton = screen.getByText("Remover")
       fireEvent.click(removeButton)
       expect(store.dispatch).toHaveBeenCalledTimes(1)
@@ -89,18 +100,18 @@ describe("<TeamCard/>", () => {
         deleteCharacter(testCharacter.id)
       )
     })
-    test("Redirects to character page on clicking details button", () => {
+    it("Should redirect to character page on clicking details button", () => {
       const detailsButton = screen.getByText("Ver detalle")
       fireEvent.click(detailsButton)
       expect(history.location.pathname).toBe(`/character/${testCharacter.id}`)
     })
-    test("Redirects to character page on clicking image", () => {
+    it("Should redirects to character page on clicking image", () => {
       const characterImage = screen.getByAltText(testCharacter.name)
       fireEvent.click(characterImage)
       expect(history.location.pathname).toBe(`/character/${testCharacter.id}`)
     })
   })
-  describe("Rendering null stats", () => {
+  describe("Rendering NaN stats", () => {
     beforeEach(() => {
       store = mockStore({})
       render(
@@ -117,7 +128,7 @@ describe("<TeamCard/>", () => {
         </Provider>
       )
     })
-    test("Rendering NaN stats show an '?'", () => {
+    it("Should render a '?' when stats are NaN", () => {
       const stats = screen.getAllByTestId("stat-card-test")
       for (const stat of stats) {
         const statNumber = stat.textContent?.slice(-1)
@@ -142,7 +153,7 @@ describe("<TeamCard/>", () => {
         </Provider>
       )
     })
-    test("Rendering numbers stats", () => {
+    it("Should render number stats", () => {
       const stats = screen.getAllByTestId("stat-card-test")
       for (const stat of stats) {
         const statNumber = stat.textContent?.slice(-1)

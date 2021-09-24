@@ -17,7 +17,7 @@ describe("<PrivateRoute/>", () => {
       </Router>
     )
   })
-  test("Route checks localstorage", () => {
+  it("Should check localstorage", () => {
     expect(localStorage.getItem).toBeCalledWith("token")
     expect(localStorage.getItem("token")).toBeFalsy()
     expect(history.location.pathname).toBe(redirectPath)

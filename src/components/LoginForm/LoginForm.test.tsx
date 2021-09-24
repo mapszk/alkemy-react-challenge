@@ -15,56 +15,32 @@ describe("<LoginForm/>", () => {
       </Router>
     )
   })
-  test("Component renders", () => {
-    const title = screen.getByText("Iniciar sesión")
-    expect(title).toBeInTheDocument()
+  it("Should render a title, email and password input, and submit button", () => {
+    expect(screen.getByText("Iniciar sesión")).toBeInTheDocument()
+    expect(screen.getByText("Ingresar")).toBeInTheDocument()
+    expect(screen.getByPlaceholderText("Email")).toBeInTheDocument()
+    expect(screen.getByPlaceholderText("Password")).toBeInTheDocument()
   })
   describe("Validation", () => {
-    test("Emtpy fields", async () => {
+    it("Should display a warning for wrong email and password ", async () => {
       const submitButton = screen.getByText("Ingresar")
       fireEvent.click(submitButton)
       await screen.findByText("Ingresa el email")
       await screen.findByText("Ingresa la contraseña")
     })
-    test("Validating wrong email format", async () => {
+    it("Should display a warning for invalid email format", async () => {
       const submitButton = screen.getByText("Ingresar")
       const emailInput = screen.getByPlaceholderText("Email")
       fireEvent.change(emailInput, { target: { value: "test" } })
       fireEvent.click(submitButton)
       await screen.findByText("Debes ingresar un email válido")
     })
-    test("Validating short password", async () => {
+    it("Should display a warning for short password", async () => {
       const submitButton = screen.getByText("Ingresar")
       const passwordInput = screen.getByPlaceholderText("Password")
       fireEvent.change(passwordInput, { target: { value: "a" } })
       fireEvent.click(submitButton)
       await screen.findByText("La contraseña es muy corta")
-    })
-  })
-  describe("Submitting", () => {
-    test("With wrong credentials displays a warning", async () => {
-      const submitButton = screen.getByText("Ingresar")
-      const emailInput = screen.getByPlaceholderText("Email")
-      const passwordInput = screen.getByPlaceholderText("Password")
-      fireEvent.change(emailInput, { target: { value: "test@email.com" } })
-      fireEvent.change(passwordInput, { target: { value: "password" } })
-      fireEvent.click(submitButton)
-      await waitFor(() => {
-        screen.getByText("Please provide valid email and password")
-      })
-    })
-    test("With valid credentials redirects to home ('/')", async () => {
-      const submitButton = screen.getByText("Ingresar")
-      const emailInput = screen.getByPlaceholderText("Email")
-      const passwordInput = screen.getByPlaceholderText("Password")
-      fireEvent.change(emailInput, {
-        target: { value: "challenge@alkemy.org" },
-      })
-      fireEvent.change(passwordInput, { target: { value: "react" } })
-      fireEvent.click(submitButton)
-      await waitFor(() => {
-        expect(history.location.pathname).toBe("/")
-      })
     })
   })
 })

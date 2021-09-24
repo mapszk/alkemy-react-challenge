@@ -16,15 +16,12 @@ describe("<Navbar/>", () => {
       </Router>
     )
   })
-  test("Navbar render", () => {
+  it("Should render the title and search input", () => {
     expect(screen.getByText(titleText)).toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText("Buscar personaje...")
+    ).toBeInTheDocument()
   })
-  test("Navbar render title", () => {
-    const title = screen.getByText(titleText)
-    expect(title).toBeInTheDocument()
-    expect(title).toHaveTextContent(titleText)
-  })
-
   describe("Navbar location different than '/'", () => {
     beforeAll(() => {
       history.push("/testing")
@@ -32,17 +29,17 @@ describe("<Navbar/>", () => {
     afterAll(() => {
       history.push("/")
     })
-    test("Navbar has 'back' button when location is not home('/')", () => {
+    it("Should have a 'back' button when location is not home('/')", () => {
       const backButton = screen.getByText("Volver")
       expect(backButton).toBeInTheDocument()
       expect(backButton).toHaveTextContent("Volver")
     })
-    test("When clicking on back button location goes to home('/')", () => {
+    it("Should go home on clicking back button", () => {
       const backButton = screen.getByText("Volver")
       fireEvent.click(backButton)
       expect(history.location.pathname).toBe("/")
     })
-    test("When typing on input and pressing enter location goes to search results", () => {
+    it("Should go to search results when typing on input and pressing enter", () => {
       const searchInput = screen.getByPlaceholderText("Buscar personaje...")
       const keyword = "batman"
       fireEvent.change(searchInput, { target: { value: keyword } })
