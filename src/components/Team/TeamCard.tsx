@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { DELETE_CHARACTER } from "src/store/actionTypes"
 import { CharacterStats } from "src/types/CharacterStats"
+import { translateStat } from "src/util/translateStat"
 
 interface Props {
   id: number
@@ -41,24 +42,15 @@ const TeamCard: FC<Props> = ({
           </span>
         </Card.Title>
         <ListGroup variant="flush">
-          <ListGroup.Item className="px-0 py-1">
-            Inteligencia: {!stats.intelligence ? "?" : stats.intelligence}
-          </ListGroup.Item>
-          <ListGroup.Item className="px-0 py-1">
-            Fuerza: {!stats.strength ? "?" : stats.strength}
-          </ListGroup.Item>
-          <ListGroup.Item className="px-0 py-1">
-            Velocidad: {!stats.speed ? "?" : stats.speed}
-          </ListGroup.Item>
-          <ListGroup.Item className="px-0 py-1">
-            Resistencia: {!stats.durability ? "?" : stats.durability}
-          </ListGroup.Item>
-          <ListGroup.Item className="px-0 py-1">
-            Potencia: {!stats.power ? "?" : stats.power}
-          </ListGroup.Item>
-          <ListGroup.Item className="px-0 py-1">
-            Combate: {!stats.combat ? "?" : stats.combat}
-          </ListGroup.Item>
+          {Object.keys(stats).map((stat, index) => (
+            <ListGroup.Item
+              data-testid="stat-card-test"
+              key={index}
+              className="px-0 py-1"
+            >
+              {translateStat(stat)}: {isNaN(stats[stat]) ? "?" : stats[stat]}
+            </ListGroup.Item>
+          ))}
         </ListGroup>
       </Card.Body>
       <Button
