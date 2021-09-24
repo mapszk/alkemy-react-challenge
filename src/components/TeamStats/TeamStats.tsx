@@ -26,7 +26,7 @@ const TeamStats: FC<Props> = ({ team }) => {
     const totalCombat = team.map((character: CharacterShortData) =>
       !character.stats.combat ? 0 : character.stats.combat
     )
-    const totalStrenght = team.map((character: CharacterShortData) =>
+    const totalStrength = team.map((character: CharacterShortData) =>
       !character.stats.strength ? 0 : character.stats.strength
     )
     return [
@@ -51,8 +51,8 @@ const TeamStats: FC<Props> = ({ team }) => {
         value: totalCombat.reduce((a: number, b: number) => a + b, 0),
       },
       {
-        name: "strenght",
-        value: totalStrenght.reduce((a: number, b: number) => a + b, 0),
+        name: "strength",
+        value: totalStrength.reduce((a: number, b: number) => a + b, 0),
       },
     ]
   }, [team])
