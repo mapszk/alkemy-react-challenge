@@ -37,10 +37,10 @@ const CharacterInfo: FC<Props> = ({ info }) => {
         Alias: <span className="fw-bold">{aliases.join(", ")}</span>
       </p>
       <p className="fs-5">
-        Peso: <span className="fw-bold">{weight}kg</span>
+        Peso: <span className="fw-bold">{weight.toFixed(2)}kg</span>
       </p>
       <p className="fs-5">
-        Altura: <span className="fw-bold">{height}cm</span>
+        Altura: <span className="fw-bold">{height.toFixed(2)}cm</span>
       </p>
       <p className="fs-5">
         Trabajo: <span className="fw-bold">{work}</span>
