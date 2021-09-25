@@ -9,18 +9,25 @@ import Navbar from "./Navbar"
 describe("<Navbar/>", () => {
   const titleText = "Testing"
   const history = createMemoryHistory()
+  let component: any
   beforeEach(() => {
-    render(
+    component = render(
       <Router history={history}>
         <Navbar title={titleText} />
       </Router>
     )
   })
-  it("Should render the title and search input", () => {
+  it("Should render the title, search input and log out button", () => {
+    const searchInput = screen.getByPlaceholderText("Buscar personaje...")
     expect(screen.getByText(titleText)).toBeInTheDocument()
-    expect(
-      screen.getByPlaceholderText("Buscar personaje...")
-    ).toBeInTheDocument()
+    expect(searchInput).toBeInTheDocument()
+    expect(screen.getByTestId("test-logoutButton")).toBeInTheDocument()
+  })
+  it("Should remove token from localStorage and redirect to login when clicking on log out button", () => {
+    const logOutButton = screen.getByTestId("test-logoutButton")
+    fireEvent.click(logOutButton)
+    expect(localStorage.removeItem).toBeCalledTimes(1)
+    expect(history.location.pathname).toBe("/login")
   })
   describe("Navbar location different than '/'", () => {
     beforeAll(() => {

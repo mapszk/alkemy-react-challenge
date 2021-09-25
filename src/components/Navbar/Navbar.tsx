@@ -1,6 +1,7 @@
 import React, { FC, useState } from "react"
 import { Button, Col, FormControl, InputGroup, Row } from "react-bootstrap"
 import { AiOutlineSearch } from "react-icons/ai"
+import { FiLogOut } from "react-icons/fi"
 import { useHistory } from "react-router-dom"
 
 interface Props {
@@ -11,10 +12,14 @@ const Navbar: FC<Props> = ({ title }) => {
   const history = useHistory()
   const [search, setSearch] = useState<string>("")
   const handleSearch = () => history.push(`/search/${search}`)
+  const handleLogOut = () => {
+    localStorage.removeItem("token")
+    history.push("/login")
+  }
 
   return (
     <Row className="p-0 align-items-center justify-content-between my-2">
-      <Col className="order-sm-2" xs={12} sm={6} lg={4}>
+      <Col className="order-sm-2 d-flex" xs={12} sm={6} lg={4}>
         <InputGroup className="mb-2 mb-sm-0 w-100 mw-50">
           <FormControl
             value={search}
@@ -32,6 +37,14 @@ const Navbar: FC<Props> = ({ title }) => {
             <AiOutlineSearch />
           </Button>
         </InputGroup>
+        <Button
+          data-testid="test-logoutButton"
+          onClick={handleLogOut}
+          variant="danger"
+          className="mb-2 mb-sm-0 mx-1 d-flex justify-center align-items-center"
+        >
+          <FiLogOut />
+        </Button>
       </Col>
       <Col xs={12} sm={6}>
         <div className="d-flex align-items-center">
