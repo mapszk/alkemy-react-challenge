@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { CharacterLongData } from "src/types/CharacterLongData"
+import { mapCharacterFromDetails } from "src/util/mapCharacterFromDetails"
 
 export const useCharacterDetails = (id: string) => {
   const [loading, setLoading] = useState<boolean>(true)
@@ -14,27 +15,8 @@ export const useCharacterDetails = (id: string) => {
       await axios
         .get(url)
         .then(({ data: character }) => {
-          setData({
-            id: Number(character.id),
-            name: character.name,
-            image: character.image.url,
-            alignment: character.biography.alignment,
-            fullName: character.biography["full-name"],
-            aliases: character.biography.aliases,
-            eyeColor: character.appearance["eye-color"],
-            hairColor: character.appearance["hair-color"],
-            height: Number(character.appearance.height[1].replace(/\D/g, "")),
-            weight: Number(character.appearance.weight[1].replace(/\D/g, "")),
-            work: character.work.occupation,
-            stats: {
-              intelligence: Number(character.powerstats.intelligence),
-              speed: Number(character.powerstats.speed),
-              durability: Number(character.powerstats.durability),
-              power: Number(character.powerstats.power),
-              combat: Number(character.powerstats.combat),
-              strength: Number(character.powerstats.strength),
-            },
-          })
+          const mapedCharacter = mapCharacterFromDetails(character)
+          setData(mapedCharacter)
           setLoading(false)
         })
         .catch((err) => {
