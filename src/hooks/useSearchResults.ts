@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { CharacterDatabase } from "src/types/CharacterDatabase"
 import { CharacterShortData } from "src/types/CharacterShortData"
+import { mapCharactersFromSearch } from "src/util/mapCharacterFromSearch"
 
 export const useSearchResults = (name: string) => {
   const [loading, setLoading] = useState<boolean>(true)
@@ -18,30 +18,7 @@ export const useSearchResults = (name: string) => {
         .get(url)
         .then((res) => {
           setLoading(false)
-          setData(
-            res.data.results.map((character: CharacterDatabase) => {
-              return {
-                id: Number(character.id),
-                name: character.name,
-                image: character.image.url,
-                stats: {
-                  intelligence: Number(character.powerstats.intelligence),
-                  speed: Number(character.powerstats.speed),
-                  durability: Number(character.powerstats.durability),
-                  power: Number(character.powerstats.power),
-                  combat: Number(character.powerstats.combat),
-                  strength: Number(character.powerstats.strength),
-                },
-                alignment: character.biography.alignment,
-                weight: Number(
-                  character.appearance.weight[1].replace(/\D/g, "")
-                ),
-                height: Number(
-                  character.appearance.height[1].replace(/\D/g, "")
-                ),
-              }
-            })
-          )
+          setData(res.data.results.map(mapCharactersFromSearch))
         })
         .catch((err) => {
           setLoading(false)
